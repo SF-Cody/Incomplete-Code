@@ -1,7 +1,8 @@
 import java.util.*;
+
 interface Emp {
     String getName();    
-    void setName();
+    void setName(String name);
 }
 
 interface FullTime {
@@ -14,32 +15,17 @@ interface PartTime {
     double getWage();
 }
 
-class Employee implements Emp {
-    String name, input;
-        
-    public Employee(String name, String input) {
-        this.name = name;
-        this.input = input;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName() {
-        Scanner nameScanner = new Scanner(System.in);
-        System.out.println("Enter name: ");
-        this.name = nameScanner.nextLine();
-        System.out.println("Press F for Full Time or P for Part Time: ");
-        this.input = nameScanner.nextLine();
-        char inputTwo = this.input.charAt(0);
-        switch (inputTwo) {
+class ResultEvaluator {
+    public void Evaluate(String name, char employeeTypeChar) {
+        switch (employeeTypeChar) {
             case 'f':
             case 'F':
-                FullTime fullTimer = new FullTimeEmployee(1);
+                FullTimeEmployee fullTimer = new FullTimeEmployee(name, 1);
                 fullTimer.setMonthlySalary();
                 break;
             case 'p':
             case 'P':
-                PartTime partTimer = new PartTimeEmployee(1, 2, 3);
+                PartTimeEmployee partTimer = new PartTimeEmployee(name, 1, 2, 3);
                 partTimer.setWage();
                 break;
             default:
@@ -47,14 +33,32 @@ class Employee implements Emp {
                 System.exit(0);
                 break;
             }
-
-  }
+    }
 }
 
-class FullTimeEmployee implements FullTime {
+class Employee implements Emp {
+    public String name;
+        
+    public Employee(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+}
+
+class FullTimeEmployee extends Employee implements FullTime {
+    
     double monthlySalary;
     
-    public FullTimeEmployee(double monthlySalary) {
+    public FullTimeEmployee(String name, double monthlySalary) {
+        super(name);
+        
         this.monthlySalary = monthlySalary;
     }
     
@@ -66,20 +70,24 @@ class FullTimeEmployee implements FullTime {
         Scanner MonthlyScanner = new Scanner(System.in);
         System.out.println("Enter monthly salary: ");
         this.monthlySalary = MonthlyScanner.nextDouble();
-        Emp start = new Employee("Dum", "Dum2");
+        
         System.out.println("Calculating results...");
-        System.out.println("Name: " + start.getName());
+        
+        System.out.println("Name: " + this.getName());
+        
         System.out.println("Monthly Salary: " + getMonthlySalary());
         System.exit(0);
     }
 }
 
-class PartTimeEmployee implements PartTime {
+class PartTimeEmployee extends Employee implements PartTime {
     double ratePerHour;
     int hoursWorked;
     double wage;
     
-    public PartTimeEmployee(double ratePerHour, int hoursWorked, double wage) {
+    public PartTimeEmployee(String name, double ratePerHour, int hoursWorked, double wage) {
+        super(name);
+        
         this.ratePerHour = ratePerHour;
         this.hoursWorked = hoursWorked;
         this.wage = wage;
@@ -96,8 +104,9 @@ class PartTimeEmployee implements PartTime {
         this.hoursWorked = RateScanner.nextInt();
         System.out.println("Calculating results...");
         this.wage = this.ratePerHour * this.hoursWorked;
-        Emp start = new Employee("Dum", "Dum2");
-        System.out.println("Name: " + start.getName());
+
+        System.out.println("Name: " + this.getName());
+        
         System.out.println("Wage: " + getWage());
         System.exit(0);
     }
@@ -105,7 +114,15 @@ class PartTimeEmployee implements PartTime {
 
 public class Activity7 {
     public static void main(String args[]) {
-        Emp start = new Employee("Dum", "Dum2");
-        start.setName();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter name: ");
+        String name = scanner.nextLine();
+        
+        System.out.println("Press F for Full Time or P for Part Time: ");
+        String employeeType = scanner.nextLine();
+        char employeeTypeChar = employeeType.charAt(0);
+        
+        ResultEvaluator evaluator = new ResultEvaluator();
+        evaluator.Evaluate(name, employeeTypeChar);
     }
 }
