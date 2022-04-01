@@ -1,0 +1,111 @@
+import java.util.*;
+interface Emp {
+    String getName();    
+    void setName();
+}
+
+interface FullTime {
+    void setMonthlySalary();
+    double getMonthlySalary();
+}
+
+interface PartTime {
+    void setWage();
+    double getWage();
+}
+
+class Employee implements Emp {
+    String name, input;
+        
+    public Employee(String name, String input) {
+        this.name = name;
+        this.input = input;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public void setName() {
+        Scanner nameScanner = new Scanner(System.in);
+        System.out.println("Enter name: ");
+        this.name = nameScanner.nextLine();
+        System.out.println("Press F for Full Time or P for Part Time: ");
+        this.input = nameScanner.nextLine();
+        char inputTwo = this.input.charAt(0);
+        switch (inputTwo) {
+            case 'f':
+            case 'F':
+                FullTime fullTimer = new FullTimeEmployee(1);
+                fullTimer.setMonthlySalary();
+                break;
+            case 'p':
+            case 'P':
+                PartTime partTimer = new PartTimeEmployee(1, 2, 3);
+                partTimer.setWage();
+                break;
+            default:
+                System.out.println("Invalid input.");
+                System.exit(0);
+                break;
+            }
+
+  }
+}
+
+class FullTimeEmployee implements FullTime {
+    double monthlySalary;
+    
+    public FullTimeEmployee(double monthlySalary) {
+        this.monthlySalary = monthlySalary;
+    }
+    
+    public double getMonthlySalary() {
+        return this.monthlySalary;
+    }
+    
+    public void setMonthlySalary() {
+        Scanner MonthlyScanner = new Scanner(System.in);
+        System.out.println("Enter monthly salary: ");
+        this.monthlySalary = MonthlyScanner.nextDouble();
+        Emp start = new Employee("Dum", "Dum2");
+        System.out.println("Calculating results...");
+        System.out.println("Name: " + start.getName());
+        System.out.println("Monthly Salary: " + getMonthlySalary());
+        System.exit(0);
+    }
+}
+
+class PartTimeEmployee implements PartTime {
+    double ratePerHour;
+    int hoursWorked;
+    double wage;
+    
+    public PartTimeEmployee(double ratePerHour, int hoursWorked, double wage) {
+        this.ratePerHour = ratePerHour;
+        this.hoursWorked = hoursWorked;
+        this.wage = wage;
+    }
+    
+    public double getWage() {
+        return this.wage;
+    }
+    
+    public void setWage() {
+        Scanner RateScanner = new Scanner(System.in);
+        System.out.println("Enter rate per hour and no. of hours worked separated by space: ");
+        this.ratePerHour = RateScanner.nextDouble();
+        this.hoursWorked = RateScanner.nextInt();
+        System.out.println("Calculating results...");
+        this.wage = this.ratePerHour * this.hoursWorked;
+        Emp start = new Employee("Dum", "Dum2");
+        System.out.println("Name: " + start.getName());
+        System.out.println("Wage: " + getWage());
+        System.exit(0);
+    }
+}
+
+public class Activity7 {
+    public static void main(String args[]) {
+        Emp start = new Employee("Dum", "Dum2");
+        start.setName();
+    }
+}
